@@ -1,0 +1,6 @@
+[submodule "deps/cpp-sugiyama-waller"]
+	path = deps/cpp-sugiyama-waller
+	url = https://github.com/misaki-sugiyama/cpp-sugiyama-waller.git
+[submodule "tests/deps/catch2"]
+	path = tests/deps/catch2
+	url = https://github.com/catchorg/Catch2

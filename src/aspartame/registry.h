@@ -4,23 +4,18 @@
 
 namespace aspartame {
 
-  class OptBase; // forward decleration
+  // forward decleration of base classes
+  struct IOptScalar;
 
-  enum class OptionType { scalar, array, map };
+  enum class OptionType { scalar, array, map, multimap };
 
-  class OptionRegistry {
-  public:
-    void add(const char* name, OptBase* opt);
-
+  struct OptionRegistry {
+    void add(const char* name, IOptScalar* opt);
     bool has(const char* name);
 
   private:
     class Impl;
     sugiyama::PImpl<Impl> pimpl;
   };
-
-
-  // Forward-declared Option base class
-  class IOpt;
 
 }

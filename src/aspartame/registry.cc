@@ -1,4 +1,5 @@
 #include "aspartame/registry.h"
+#include "aspartame/exception-registry.h"
 #include "aspartame/interface-option.h"
 
 #include "sugiyama/pimpl-inl.h"
@@ -9,16 +10,24 @@
 namespace aspartame {
 
   struct OptionRegistry::Impl {
-    std::map<std::string, OptionType> mOpt;
-    std::map<std::string, IOptScalar*> mOptScalar;
+    std::map<std::string, OptionType, std::less<>> mOpt;
+    std::map<std::string, IOptScalar*, std::less<>> mOptScalar;
   };
 
   OptionRegistry::OptionRegistry() = default;
   SUGIYAMA_RO5_DEF(OptionRegistry, OptionRegistry);
 
-  void OptionRegistry::add(const char* name, IOptScalar* opt) {
-    // TODO: need some exceptions here
-    pimpl->mOpt.emplace
+  bool OptionRegistry::has(const std::string& name) {
+    return pimpl->mOpt.count(name) > 0;
+  }
+
+  void OptionRegistry::add(const std::string& name, IOptScalar& opt) {
+    if (!has(name)) {
+      pimpl->mOpt.emplace(name, OptionType::scalar);
+      pimpl->mOptScalar.emplace(name, &opt);
+    } else {
+      throw ExceptionRegistryAddDup(name);
+    }
   }
 
 }

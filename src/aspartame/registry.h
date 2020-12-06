@@ -3,6 +3,8 @@
 #include "sugiyama/pimpl.h"
 #include "sugiyama/ro5.h"
 
+#include <CorradeStlForwardString.h>
+
 namespace aspartame {
 
   // forward decleration of base classes
@@ -13,8 +15,8 @@ namespace aspartame {
   struct OptionRegistry {
     OptionRegistry();
 
-    void add(const char* name, IOptScalar* opt);
-    bool has(const char* name);
+    bool has(const std::string& name);
+    void add(const std::string& name, IOptScalar& opt);
 
     SUGIYAMA_RO5_DEC(OptionRegistry);
   private:

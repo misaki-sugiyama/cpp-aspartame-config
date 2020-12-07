@@ -1,9 +1,8 @@
 // Config registry
 #pragma once
 #include "sugiyama/pimpl.h"
-#include "sugiyama/ro5.h"
 
-#include <CorradeStlForwardString.h>
+#include <cstddef> // for size_t
 
 namespace aspartame {
 
@@ -13,12 +12,19 @@ namespace aspartame {
   enum class OptionType { scalar, array, map };
 
   struct OptionRegistry {
+    void add(const char* name, const char* desc, IOptScalar& opt);
+    bool has(const char* name);
+    size_t size();
+
+    const char* getDesc(const char* name);
+
     OptionRegistry();
-
-    bool has(const std::string& name);
-    void add(const std::string& name, IOptScalar& opt);
-
-    SUGIYAMA_RO5_DEC(OptionRegistry);
+    ~OptionRegistry();
+    OptionRegistry(OptionRegistry&& rhs) noexcept;
+    OptionRegistry& operator=(OptionRegistry&& rhs) noexcept;
+    // No copy for registry class
+    OptionRegistry(const OptionRegistry& rhs) = delete;
+    OptionRegistry& operator=(const OptionRegistry& rhs) = delete;
   private:
     struct Impl;
     sugiyama::PImpl<Impl> pimpl;
